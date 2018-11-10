@@ -31,9 +31,10 @@ def get_list():
 #
 #     set_list(dic)
 
-def add_new_to_list(song_id):
+def add_new_to_list(song):
     dic = get_list()
-    dic[song_id] = 1
+    song['votes'] = 1
+    dic[song['id']] = song
     set_list(dic)
 
 
@@ -52,24 +53,28 @@ def read_playlist():
 # This function sorts through the playlist to make
 # a list of the ids and a list of the song titles
 def show_tracks(tracks):
-    names = []
-    ids = []
+    result = {}
+
     for i, item in enumerate(tracks['items']):
         track = item['track']
-        names += [track["id"]]
-        ids += [track["name"]]
-    return names, ids
+        result[track['id']] = {
+            'id': track['id'],
+            'name': track['name'],
+            # 'artist': track['artist'],
+        }
+
+    return result
 
 
 # This function reorders the Spotify playlist
 # based on votes found in the json file
-def reorder_playlist(sp, names):
+def reorder_playlist(sp, song_ids):
     new_order = best_songs()
     for i in range(len(new_order) -1, -1, -1):
-        for j in range(len(names)):
-            if new_order[i][0] == names[j]:
-                names.insert(0, names[j])
-                names.pop(j + 1)
+        for j in range(len(song_ids)):
+            if new_order[i]['id'] == song_ids[j]:
+                song_ids.insert(0, song_ids[j])
+                song_ids.pop(j + 1)
                 sp.user_playlist_reorder_tracks(username, playlist, j, 0, 1)
 
 
@@ -94,14 +99,19 @@ def vote_for_song(song):
     sp.trace = False
     results = sp.user_playlist(username, playlist, fields="tracks,next")
     tracks = results['tracks']
-    song_ids = show_tracks(tracks)[0]
+    songs = show_tracks(tracks)
 
-    if song not in song_ids:
+    if song not in songs:
         sp.user_playlist_add_tracks(username, playlist, [song])
-        add_new_to_list(song)
+
+        results = sp.user_playlist(username, playlist, fields="tracks,next")
+        tracks = results['tracks']
+        songs_new = show_tracks(tracks)
+
+        add_new_to_list(songs_new[song])
+
     else:
         vote_for(song)
 
-    reorder_playlist(sp, song_ids)
-
+    reorder_playlist(sp, list(songs.keys()))
 ########################################################################################################################

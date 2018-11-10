@@ -16,13 +16,13 @@ def set_votes(votes):
 
 def vote_for(song):
     votes = get_votes()
-    votes[song] += 1
+    votes[song]['votes'] += 1
     set_votes(votes)
 
 
 def add_song(song):
     votes = get_votes()
-    votes[song] = 0
+    votes[song]['votes'] = 0
     set_votes(votes)
 
 
@@ -50,18 +50,22 @@ def most_popular():
 
 def best_songs():
     votes = get_votes()
-    finList = []
-    for key in votes:
-        if finList == []:
-            finList.append((key, votes[key]))
-        else:
-            x = len(finList)
-            for i in range(len(finList)):
-                if finList[i][1] < votes[key]:
-                    finList.insert(i, (key, votes[key]))
-                    break
-            y = len(finList)
-            if x == y:
-                finList.append((key, votes[key]))
-    return finList
+    # finList = []
+    # for key in votes:
+    #     if finList == []:
+    #         finList.append((key, votes[key]))
+    #     else:
+    #         x = len(finList)
+    #         for i in range(len(finList)):
+    #             if finList[i][1] < votes[key]:
+    #                 finList.insert(i, (key, votes[key]))
+    #                 break
+    #         y = len(finList)
+    #         if x == y:
+    #             finList.append((key, votes[key]))
+    # return finList
+
+    result = list(votes.values())
+    result.sort(key=lambda song: song['votes'])
+    return result
 
