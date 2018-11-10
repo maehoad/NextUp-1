@@ -58,7 +58,7 @@ def show_tracks(tracks):
 
 # This function reorders the Spotify playlist
 # based on votes found in the json file
-def reorder_playlist(names):
+def reorder_playlist(sp, names):
     new_order = best_songs()
     for i in range(len(new_order) -1, -1, -1):
         for j in range(len(names)):
@@ -70,13 +70,11 @@ def reorder_playlist(names):
 
 # This if/else makes sure all the Spotify data (id, secret, uri) are inputted
 # Note that it is assumed you are inputting a username, playlist, and a list of track_ids
-if len(sys.argv) > 3:
-    username = sys.argv[1]
-    playlist = sys.argv[2]
-    track_ids = sys.argv[3:]
-else:
-    print("Usage: %s username playlist_id track_id ..." % (sys.argv[0],))
-    sys.exit()
+# HACK
+username = "diegofinni"
+playlist = "5K3rtFT1Tq19lJ04wjuVBV"
+track_ids = ["59WN2psjkt1tyaxjspN8fp"]
+# HACK
 
 scope = 'playlist-modify-public'
 # Example data
@@ -86,7 +84,7 @@ token = util.prompt_for_user_token(username, scope, client_id='171b3cdfebb344ba9
 
 # If a valid token is used, this if statement compiles all of the helper
 #  functions to execute the purpose of this file(read README if confused)
-if token:
+def reorder_by_votes():
     sp = spotipy.Spotify(auth=token)
     sp.trace = False
     results = sp.user_playlist(username, playlist, fields="tracks,next")
@@ -99,8 +97,6 @@ if token:
     if len(track_ids) >= 1:
         results = sp.user_playlist_add_tracks(username, playlist, track_ids)
     update_list(names)
-    reorder_playlist(names)
-else:
-    print("Can't get token for", username)
+    reorder_playlist(sp, names)
 
 ########################################################################################################################
