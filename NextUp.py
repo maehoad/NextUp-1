@@ -79,6 +79,7 @@ else:
     sys.exit()
 
 scope = 'playlist-modify-public'
+# Example data
 token = util.prompt_for_user_token(username, scope, client_id='171b3cdfebb344ba9772c6859136c2d4',
                                    client_secret='Fca0bb0ea99f493d987b27c9568b79ee',
                                    redirect_uri='http://www.google.com/')
