@@ -23,12 +23,17 @@ def get_list():
         return json.load(file)
 
 
-def update_list(lst):
-    dic = get_list()
-    for song in lst:
-        if song not in dic:
-            dic[song] = 0
+# def update_list(lst):
+#     dic = get_list()
+#     for song in lst:
+#         if song not in dic:
+#             dic[song] = 0
+#
+#     set_list(dic)
 
+def add_new_to_list(song_id):
+    dic = get_list()
+    dic[song_id] = 1
     set_list(dic)
 
 
@@ -72,8 +77,8 @@ def reorder_playlist(sp, names):
 # Note that it is assumed you are inputting a username, playlist, and a list of track_ids
 # HACK
 username = "diegofinni"
-playlist = "5K3rtFT1Tq19lJ04wjuVBV"
-track_ids = ["59WN2psjkt1tyaxjspN8fp"]
+playlist = "5I2gsRzfIUSMuxaTzXxEun"
+track_ids = ["6RUKPb4LETWmmr3iAEQktW"]
 # HACK
 
 scope = 'playlist-modify-public'
@@ -84,19 +89,19 @@ token = util.prompt_for_user_token(username, scope, client_id='171b3cdfebb344ba9
 
 # If a valid token is used, this if statement compiles all of the helper
 #  functions to execute the purpose of this file(read README if confused)
-def reorder_by_votes():
+def vote_for_song(song):
     sp = spotipy.Spotify(auth=token)
     sp.trace = False
     results = sp.user_playlist(username, playlist, fields="tracks,next")
     tracks = results['tracks']
     song_ids = show_tracks(tracks)[0]
-    names = show_tracks(tracks)[1]
-    for track in track_ids:
-        if track in song_ids:
-            track_ids.remove(track)
-    if len(track_ids) >= 1:
-        results = sp.user_playlist_add_tracks(username, playlist, track_ids)
-    update_list(names)
-    reorder_playlist(sp, names)
+
+    if song not in song_ids:
+        sp.user_playlist_add_tracks(username, playlist, [song])
+        add_new_to_list(song)
+    else:
+        vote_for(song)
+
+    reorder_playlist(sp, song_ids)
 
 ########################################################################################################################

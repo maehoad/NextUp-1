@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from algor1 import *
-from NextUp import reorder_by_votes
+from NextUp import vote_for_song
 
 app = Flask(__name__)
 
@@ -37,10 +37,5 @@ def reset_songs():
 @app.route('/vote', methods=['POST'])
 def cast_vote():
     song = request.args.get('song')
-    try:
-        vote_for(song)
-    except KeyError:
-        abort(400)
-
-    reorder_by_votes()
+    vote_for_song(song)
     return "Voted for song"
