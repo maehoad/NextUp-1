@@ -1,6 +1,9 @@
 # NextUp
 CMU Hack112 Project
 
+Link to voting: http://97687a7e.ngrok.io/ 
+
+
 NextUp is a Hack112 (F18) project created by Diego San Miguel, Sean Prendi, Vignesh Rajmohan, and Mae Hoed
 
 NextUp is meant to be a website that allows users to connect to a Spotify playlist and vote on what song they want next or add new songs
