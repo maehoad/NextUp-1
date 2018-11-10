@@ -3,7 +3,7 @@
 # Note this file does NOT add votes to the json file
 # For this file to work in conjunction with the app you MUST call the file, then add a username ("diegofinni" in our
 # case), followed by an id of the playlist and then the ids of all the tracks you want to add to the playlist
-# Example of calling file: python3 NextUp.py diegofinni 5K3rtFT1Tq19lJ04wjuVBV 59WN2psjkt1tyaxjspN8fp
+# Example of calling file on terminal: python3 NextUp.py diegofinni 5K3rtFT1Tq19lJ04wjuVBV 59WN2psjkt1tyaxjspN8fp
 # The client data needed for this file to work (CLIENT ID, SECRET, and REDIRECT_URI) are already given
 
 import sys
