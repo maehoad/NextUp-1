@@ -67,5 +67,6 @@ def best_songs():
 
     result = list(votes.values())
     result.sort(key=lambda song: song['votes'])
+    result.reverse()
     return result
 
